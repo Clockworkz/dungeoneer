@@ -1,0 +1,7 @@
+﻿  Source.cpp
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\ltexture.h(116): warning C4018: '>': signed/unsigned mismatch
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\inputhandler.h(15): error C2059: syntax error: '='
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\inputhandler.h(15): error C2238: unexpected token(s) preceding ';'
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\inputhandler.h(20): error C2059: syntax error: '='
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\inputhandler.h(20): error C2238: unexpected token(s) preceding ';'
+c:\users\mwagh\documents\visual studio 2015\projects\proj1\proj1\inputhandler.h(75): error C2059: syntax error: '}'
