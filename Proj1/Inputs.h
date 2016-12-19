@@ -63,6 +63,9 @@ public:
 			case SDLK_LEFT:
 				walk = false;
 				break;
+			case SDLK_ESCAPE:
+				quit = false;
+				break;
 			}
 		}
 	}

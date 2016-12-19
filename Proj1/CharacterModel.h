@@ -31,6 +31,10 @@ public:
 
 	void runAnim(int x, int y, int& frame, const int& FPU, SDL_Renderer* gRenderer) {
 		if (frame > RUN_END*FPU) {
+			std::cout << "resetting frame." << std::endl;
+			frame = RUN_START*FPU;
+		}
+		if (frame < RUN_START*FPU) {
 			frame = RUN_START*FPU;
 		}
 		mTexture.renderAnim(x, y, frame / FPU, gRenderer, 0.0, NULL, flip);

@@ -68,9 +68,10 @@ public:
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
 		// game loop
+		setFrames();
 		int frame = 0;
 		playerChar.setPosX(1000);
-		playerChar.setVelocity(10, 10);
+		playerChar.setPosY(1000);
 		while (quit == false) {
 			//SDL_UpdateWindowSurface(window);
 			while (SDL_PollEvent(&e) != 0) {
@@ -79,18 +80,16 @@ public:
 				}
 				input.handle(&e);
 			}
+			std::cout << input.quit << std::endl;
 			SDL_RenderClear(renderer);
 			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
 
 
 			// Create level builder class/function
 			bgTexture.render(0, 0, &camera.getRect(), renderer);
-			playerChar.setPosY(1000);
-			playerChar.move();
 			int xPos = playerChar.getPosX() - camera.getRect().x;
-			std::cout << xPos << std::endl;
 			int yPos = playerChar.getPosY() - camera.getRect().y;
-			playerChar.idleAnim(xPos, yPos, renderer);
+			playerChar.runAnim(xPos, yPos, frame, FRAMES_PER_UPDATE, renderer);
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 			SDL_RenderPresent(renderer);
 			frame++;
