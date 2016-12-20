@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <rapidjson\rapidjson.h>
 
 #include "LTexture.h"
 #include "CharacterModel.h"
 #include "Camera.h"
 #include "Inputs.h"
+#include "AnimationHandler.h"
 
 class Game {
 public:
@@ -49,10 +51,6 @@ public:
 		}
 	}
 
-	void setFrames() {
-		playerChar.setRunFrames(144, 150);
-	}
-
 	void close() {
 		SDL_FreeSurface(screenSurface);
 		screenSurface = nullptr;
@@ -70,35 +68,39 @@ public:
 		// game loop
 		setFrames();
 		int frame = 0;
-		playerChar.setPosX(1000);
-		playerChar.setPosY(1000);
+		playerChar.setPosX(610);
+		playerChar.setPosY(360);
 		while (quit == false) {
 			//SDL_UpdateWindowSurface(window);
 			while (SDL_PollEvent(&e) != 0) {
 				if (e.type == SDL_QUIT){
 					quit = true;
 				}
-				input.handle(&e);
+				input.handle(&e, quit);
 			}
-			std::cout << input.quit << std::endl;
 			SDL_RenderClear(renderer);
-			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
-
-
-			// Create level builder class/function
+			// Create level builder
 			bgTexture.render(0, 0, &camera.getRect(), renderer);
-			int xPos = playerChar.getPosX() - camera.getRect().x;
-			int yPos = playerChar.getPosY() - camera.getRect().y;
-			playerChar.runAnim(xPos, yPos, frame, FRAMES_PER_UPDATE, renderer);
+			std::cout << input.walk << std::endl;
+			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
+			playerChar.move();
+			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 			SDL_RenderPresent(renderer);
-			frame++;
+			playerChar.incrementFrame();
 		}
 		close();
 		return 0;
 	}
 
 private:
+	void setFrames() {
+		playerChar.setRunRightFrames(144, 150);
+		playerChar.setRunLeftFrames(118, 124);
+		playerChar.setRunDownFrames(131, 137);
+		playerChar.setRunUpFrames(105, 111);
+	}
+
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
 
@@ -116,6 +118,7 @@ private:
 	Camera camera = { &SCREEN_WIDTH, &SCREEN_HEIGHT };
 	CharacterModel playerChar {"Universal-LPC-spritesheet-master/body/male/orc.png", 13, 21, 27};
 	Input input{ false,false,false,false,false };
+	AnimationHandler animHandler;
 
 
 	LTexture bgTexture;

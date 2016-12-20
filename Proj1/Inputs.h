@@ -2,6 +2,15 @@
 #include <SDL.h>
 
 class Input {
+private:
+	void process() {
+		if (shoot == true) {
+			attack = false;
+		}
+		if (shoot == false && walk == false && attack == false) { //(jump == false && walk == false && attack == false) {
+			idle = true;
+		}
+	}
 public:
 	Input(bool inputWalk, bool inputShoot, bool inputQuit, bool inputFlip, bool inputAttack) :
 		walk(inputWalk), shoot(inputShoot), quit(inputQuit), flip(inputFlip), attack(inputAttack) {};
@@ -10,18 +19,12 @@ public:
 	bool quit;
 	bool flip;
 	bool attack;
+	SDL_Keycode direction;
+	bool dying = false;
 	bool idle = false;
 
-	void process () {
-		if (shoot == true) {
-			attack = false;
-		}
-		else { //(jump == false && walk == false && attack == false) {
-			idle = true;
-		}
-	}
-
-	void handle (SDL_Event* e) {
+	void handle (SDL_Event* e, bool& quit) {
+		std::cout << e->key.keysym.sym << std::endl;
 		if (e->type == SDL_QUIT) {
 			quit = true;
 		}
@@ -34,11 +37,19 @@ public:
 				break;
 			case SDLK_RIGHT:
 				walk = true;
-				flip = false;
+				direction = e->key.keysym.sym;
 				break;
 			case SDLK_LEFT:
 				walk = true;
-				flip = true;
+				direction = e->key.keysym.sym;
+				break;
+			case SDLK_DOWN:
+				walk = true;
+				direction = e->key.keysym.sym;
+				break;
+			case SDLK_UP:
+				walk = true;
+				direction = e->key.keysym.sym;
 				break;
 			case SDLK_f:
 				if (attack == false) {
@@ -53,20 +64,42 @@ public:
 			case SDLK_SPACE:
 				// Do something
 				break;
+			default:
+				walk = false;
+				shoot = false;
+				attack = false;
+				direction = NULL;
 			}
 		}
-		else if (e->type == SDL_KEYUP) {
+		/*else if (e->type == SDL_KEYUP) {
 			switch (e->key.keysym.sym) {
 			case SDLK_RIGHT:
 				walk = false;
+				direction = NULL;
 				break;
 			case SDLK_LEFT:
 				walk = false;
+				direction = NULL;
+				break;
+			case SDLK_DOWN:
+				walk = false;
+				direction = NULL;
+				break;
+			case SDLK_UP:
+				walk = false;
+				direction = NULL;
 				break;
 			case SDLK_ESCAPE:
 				quit = false;
 				break;
 			}
+		}*/
+		else {
+			walk = false;
+			shoot = false;
+			attack = false;
+			direction = NULL;
 		}
+		process();
 	}
 };
