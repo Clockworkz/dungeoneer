@@ -1,4 +1,4 @@
 ﻿  Source.cpp
 c:\code\dungeoneer\proj1\ltexture.h(116): warning C4018: '>': signed/unsigned mismatch
-  Proj1.vcxproj -> C:\Code\dungeoneer\Debug\Proj1.exe
-  Proj1.vcxproj -> C:\Code\dungeoneer\Debug\Proj1.pdb (Partial PDB)
+  Proj1.vcxproj -> C:\Code\Dungeoneer\Debug\Proj1.exe
+  Proj1.vcxproj -> C:\Code\Dungeoneer\Debug\Proj1.pdb (Partial PDB)

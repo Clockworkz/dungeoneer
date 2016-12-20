@@ -13,6 +13,14 @@
 #include "Inputs.h"
 #include "AnimationHandler.h"
 
+/* TO DO 
+- Level/Map generator
+- EnemyCharacterModel class
+- NPC Model class
+- Enemy generator - tie in to map generator
+
+*/
+
 class Game {
 public:
 	Game() {
@@ -65,6 +73,7 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
+		bgTexture.loadFromFile("Test Assets/CastleExample_3.png", renderer);
 		// game loop
 		setFrames();
 		int frame = 0;
@@ -104,8 +113,8 @@ private:
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
 
-	const int LEVEL_WIDTH = 2560;
-	const int LEVEL_HEIGHT = 2560;
+	const int LEVEL_WIDTH = 2239;
+	const int LEVEL_HEIGHT = 2235;
 
 	const int FRAMES_PER_UPDATE = 4;
 

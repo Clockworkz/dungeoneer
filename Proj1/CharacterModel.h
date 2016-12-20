@@ -165,11 +165,20 @@ public:
 		//accelerate();
 		bounds.x = bounds.x + velocX;
 		bounds.y = bounds.y + velocY;
-		if (bounds.y > yMax) {
-			bounds.y = yMax;
+		if ((bounds.y + bounds.h) > yMax) {
+			bounds.y = yMax - bounds.h - velocY;
 		}
-		if (bounds.x > xMax) {
-			bounds.x = xMax;
+
+		if ((bounds.y) < 0) {
+			bounds.y = 0;
+		}
+
+		if ((bounds.x + bounds.w) > xMax) {
+			bounds.x = xMax - bounds.w - velocX;
+		}
+
+		if ((bounds.x) < 0) {
+			bounds.x = 0;
 		}
 	}
 
@@ -256,9 +265,9 @@ private:
 	int SHOOT_START = NULL;
 	int SHOOT_END = NULL;
 
-	int yMax = Y_BASE;
+	int yMax = 2235;
 	int yMin = 0;
-	int xMax = X_BASE;
+	int xMax = 2239;
 	int xMin = 0;
 
 	int accelX;
