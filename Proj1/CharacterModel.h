@@ -33,9 +33,7 @@ public:
 		{
 		case SDLK_RIGHT:
 			velocX = 5;
-			std::cout << "running right" << std::endl;
 			if (frame > RUN_RIGHT_END*FPU) {
-				std::cout << "resetting frame." << std::endl;
 				frame = RUN_RIGHT_START*FPU;
 			}
 			if (frame < RUN_RIGHT_START*FPU) {
@@ -46,9 +44,7 @@ public:
 
 		case SDLK_LEFT:
 			velocX = -5;
-			std::cout << "running left" << std::endl;
 			if (frame > RUN_LEFT_END*FPU) {
-				std::cout << "resetting frame." << std::endl;
 				frame = RUN_LEFT_START*FPU;
 			}
 			if (frame < RUN_LEFT_START*FPU) {
@@ -59,9 +55,7 @@ public:
 
 		case SDLK_UP:
 			velocY = -5;
-			std::cout << "running up" << std::endl;
 			if (frame > RUN_UP_END*FPU) {
-				std::cout << "resetting frame." << std::endl;
 				frame = RUN_UP_START*FPU;
 			}
 			if (frame < RUN_UP_START*FPU) {
@@ -72,9 +66,7 @@ public:
 
 		case SDLK_DOWN:
 			velocY = 5;
-			std::cout << "running down" << std::endl;
 			if (frame > RUN_DOWN_END*FPU) {
-				std::cout << "resetting frame." << std::endl;
 				frame = RUN_DOWN_START*FPU;
 			}
 			if (frame < RUN_DOWN_START*FPU) {
@@ -159,8 +151,6 @@ public:
 	}
 
 	void move() {
-#
-		std::cout << velocX << velocY << std::endl;
 		//accelerate();
 		bounds.x = bounds.x + velocX;
 		bounds.y = bounds.y + velocY;
@@ -245,7 +235,7 @@ private:
 	const int TEX_COLS;
 	const int STILL_FRAME;
 	const std::string TEX_PATH;
-	int Y_BASE = 720;
+	int Y_BASE = 768;
 	int X_BASE = 1280;
 
 	LTexture mTexture;
@@ -264,9 +254,9 @@ private:
 	int SHOOT_START = NULL;
 	int SHOOT_END = NULL;
 
-	int yMax = 2235;
+	int yMax = 768;
 	int yMin = 0;
-	int xMax = 2239;
+	int xMax = 1280;
 	int xMin = 0;
 
 	int accelX;

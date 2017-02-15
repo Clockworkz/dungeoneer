@@ -23,7 +23,6 @@ public:
 			input->attack = playerChar->attackAnim(xPos, yPos, FPU, renderer);
 		}
 		else if (input->walk == true) {
-			std::cout << "walking" << std::endl;
 			playerChar->runAnim(xPos, yPos, FPU, renderer, input->direction);
 		}
 		else { //(jump == false && walk == false && attack == false) {

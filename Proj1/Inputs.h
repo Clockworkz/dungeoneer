@@ -24,7 +24,6 @@ public:
 	bool idle = false;
 
 	void handle (SDL_Event* e, bool& quit) {
-		std::cout << e->key.keysym.sym << std::endl;
 		if (e->type == SDL_QUIT) {
 			quit = true;
 		}

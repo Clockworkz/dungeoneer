@@ -74,12 +74,13 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
-		// bgMap.set_tiles();
+		//bgTexture.loadFromFile("Test Assets/grass.png", renderer);
+		bgMap.set_tiles(renderer, &camera);
 		// game loop
 		setFrames();
 		int frame = 0;
-		playerChar.setPosX(610);
-		playerChar.setPosY(360);
+		playerChar.setPosX(LEVEL_WIDTH/2);
+		playerChar.setPosY(LEVEL_HEIGHT/2);
 		while (quit == false) {
 			//SDL_UpdateWindowSurface(window);
 			while (SDL_PollEvent(&e) != 0) {
@@ -90,13 +91,12 @@ public:
 			}
 			SDL_RenderClear(renderer);
 			// Create level builder
-			// bgTexture.render(0, 0, &camera.getRect(), renderer);
-			//bgMap.render_tiles();
-			std::cout << input.walk << std::endl;
+			//bgTexture.render(0, 0, &camera.getRect(), renderer);
+			bgMap.render_tiles(renderer);
 			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
 			playerChar.move();
 			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
-			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+			
 			SDL_RenderPresent(renderer);
 			playerChar.incrementFrame();
 		}
@@ -113,10 +113,10 @@ private:
 	}
 
 	const int SCREEN_WIDTH = 1280;
-	const int SCREEN_HEIGHT = 720;
+	const int SCREEN_HEIGHT = 768;
 
-	const int LEVEL_WIDTH = 320;
-	const int LEVEL_HEIGHT = 320;
+	const int LEVEL_WIDTH = 1280;
+	const int LEVEL_HEIGHT = 768;
 
 	const int FRAMES_PER_UPDATE = 4;
 
@@ -130,7 +130,7 @@ private:
 	CharacterModel playerChar {"Universal-LPC-spritesheet-master/body/male/orc.png", 13, 21, 27};
 	Input input{ false,false,false,false,false };
 	AnimationHandler animHandler;
-	//Map bgMap = { LEVEL_WIDTH, LEVEL_HEIGHT };
+	Map bgMap = { LEVEL_WIDTH, LEVEL_HEIGHT };
 	LTexture bgTexture;
 	int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
 };
