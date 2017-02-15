@@ -22,6 +22,7 @@
     <ProjectGuid>{92536811-0105-49F7-8219-50042E825605}</ProjectGuid>
     <RootNamespace>Proj1</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>dungeoneer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -123,6 +124,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="LTexture.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

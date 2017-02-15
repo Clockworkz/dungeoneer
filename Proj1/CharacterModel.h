@@ -16,7 +16,6 @@ public:
 		//Loading success flag
 		bool success = true;
 
-		//Load Foo' texture
 		if (!mTexture.loadFromFile(TEX_PATH, gRenderer)) {
 			std::cout << "Failed to load texture image!" << std::endl;
 			success = false;

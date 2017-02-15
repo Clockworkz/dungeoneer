@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Inputs.h"
 #include "AnimationHandler.h"
+#include "Map.h"
 
 /* TO DO 
 - Level/Map generator
@@ -73,7 +74,7 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
-		bgTexture.loadFromFile("Test Assets/CastleExample_3.png", renderer);
+		// bgMap.set_tiles();
 		// game loop
 		setFrames();
 		int frame = 0;
@@ -89,7 +90,8 @@ public:
 			}
 			SDL_RenderClear(renderer);
 			// Create level builder
-			bgTexture.render(0, 0, &camera.getRect(), renderer);
+			// bgTexture.render(0, 0, &camera.getRect(), renderer);
+			//bgMap.render_tiles();
 			std::cout << input.walk << std::endl;
 			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
 			playerChar.move();
@@ -113,8 +115,8 @@ private:
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
 
-	const int LEVEL_WIDTH = 2239;
-	const int LEVEL_HEIGHT = 2235;
+	const int LEVEL_WIDTH = 320;
+	const int LEVEL_HEIGHT = 320;
 
 	const int FRAMES_PER_UPDATE = 4;
 
@@ -128,8 +130,7 @@ private:
 	CharacterModel playerChar {"Universal-LPC-spritesheet-master/body/male/orc.png", 13, 21, 27};
 	Input input{ false,false,false,false,false };
 	AnimationHandler animHandler;
-
-
+	//Map bgMap = { LEVEL_WIDTH, LEVEL_HEIGHT };
 	LTexture bgTexture;
 	int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
 };
