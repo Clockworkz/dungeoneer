@@ -74,7 +74,6 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
-		//bgTexture.loadFromFile("Test Assets/grass.png", renderer);
 		bgMap.set_tiles(renderer, &camera);
 		// game loop
 		setFrames();
@@ -82,16 +81,16 @@ public:
 		playerChar.setPosX(LEVEL_WIDTH/2);
 		playerChar.setPosY(LEVEL_HEIGHT/2);
 		while (quit == false) {
-			//SDL_UpdateWindowSurface(window);
-			while (SDL_PollEvent(&e) != 0) {
+			/*while (SDL_PollEvent(&e) != 0) {
 				if (e.type == SDL_QUIT){
 					quit = true;
 				}
 				input.handle(&e, quit);
-			}
+			}*/
+			input.processInput();
+			quit = input.quit;
 			SDL_RenderClear(renderer);
 			// Create level builder
-			//bgTexture.render(0, 0, &camera.getRect(), renderer);
 			bgMap.render_tiles(renderer);
 			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
 			playerChar.move();

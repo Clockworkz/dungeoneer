@@ -5,8 +5,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <set>
 
 #include "LTexture.h"
+#include "KeyMap.h"
 
 class CharacterModel {
 public:
@@ -28,58 +30,73 @@ public:
 		return success;
 	}
 
-	void runAnim(int x, int y, const int& FPU, SDL_Renderer* gRenderer, SDL_Keycode direction) {
-		switch (direction)
-		{
-		case SDLK_RIGHT:
-			velocX = 5;
+	int processFrame(const int& FPU) {
+		if (velocX == 0 && velocY == 0) {
+			frame = STILL_FRAME;
+			return frame / FPU;
+		}
+
+		if (velocX > 0) {
 			if (frame > RUN_RIGHT_END*FPU) {
-				frame = RUN_RIGHT_START*FPU;
+				frame = RUN_RIGHT_START * FPU;
 			}
 			if (frame < RUN_RIGHT_START*FPU) {
-				frame = RUN_RIGHT_START*FPU;
+				frame = RUN_RIGHT_START * FPU;
 			}
-			mTexture.renderAnim(x, y, frame / FPU, gRenderer, 0.0, NULL, flip);
-			break;
-
-		case SDLK_LEFT:
-			velocX = -5;
+			return frame / FPU;
+		}
+		if (velocX < 0) {
 			if (frame > RUN_LEFT_END*FPU) {
-				frame = RUN_LEFT_START*FPU;
+				frame = RUN_LEFT_START * FPU;
 			}
 			if (frame < RUN_LEFT_START*FPU) {
-				frame = RUN_LEFT_START*FPU;
+				frame = RUN_LEFT_START * FPU;
 			}
-			mTexture.renderAnim(x, y, frame / FPU, gRenderer, 0.0, NULL, flip);
-			break;
+			return frame / FPU;
+		}
 
-		case SDLK_UP:
-			velocY = -5;
-			if (frame > RUN_UP_END*FPU) {
-				frame = RUN_UP_START*FPU;
-			}
-			if (frame < RUN_UP_START*FPU) {
-				frame = RUN_UP_START*FPU;
-			}
-			mTexture.renderAnim(x, y, frame / FPU, gRenderer, 0.0, NULL, flip);
-			break;
-
-		case SDLK_DOWN:
-			velocY = 5;
+		if (velocY > 0) {
 			if (frame > RUN_DOWN_END*FPU) {
-				frame = RUN_DOWN_START*FPU;
+				frame = RUN_DOWN_START * FPU;
 			}
 			if (frame < RUN_DOWN_START*FPU) {
-				frame = RUN_DOWN_START*FPU;
+				frame = RUN_DOWN_START * FPU;
 			}
-			mTexture.renderAnim(x, y, frame / FPU, gRenderer, 0.0, NULL, flip);
-			break;
-
-		default:
-			velocX = 0;
-			velocY = 0;
-			break;
+			return frame / FPU;
 		}
+		if (velocY < 0) {
+			if (frame > RUN_UP_END*FPU) {
+				frame = RUN_UP_START * FPU;
+			}
+			if (frame < RUN_UP_START*FPU) {
+				frame = RUN_UP_START * FPU;
+			}
+			return frame / FPU;
+		}
+	}
+
+	// Need to process array of directions. Currently can only handle one at a time - if multiple are pressed only the last pressed is handled
+	void runAnim(int x, int y, const int& FPU, SDL_Renderer* gRenderer, std::set<KeyMap::direction> directions) {
+		velocX = 0;
+		velocY = 0;
+
+		if (directions.find(KeyMap::direction::right) != directions.end()) {
+			velocX += 5;			
+		}
+
+		if (directions.find(KeyMap::direction::left) != directions.end()) {
+			velocX += -5;
+		}
+
+		if (directions.find(KeyMap::direction::up) != directions.end()) {
+			velocY += -5;
+		}
+
+		if (directions.find(KeyMap::direction::down) != directions.end()) {
+			velocY += 5;
+		}
+
+		mTexture.renderAnim(x, y, processFrame(FPU), gRenderer, 0.0, NULL, flip);
 	}
 
 	bool attackAnim(int x, int y, const int& FPU, SDL_Renderer* gRenderer) {
@@ -231,6 +248,7 @@ public:
 	}
 
 private:
+	KeyMap keyMap = KeyMap();
 	const int TEX_ROWS;
 	const int TEX_COLS;
 	const int STILL_FRAME;

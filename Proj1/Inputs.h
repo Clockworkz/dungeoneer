@@ -1,8 +1,12 @@
 #pragma once
 #include <SDL.h>
+#include <map>
+#include "KeyMap.h"
 
 class Input {
 private:
+	SDL_Event e;
+
 	void process() {
 		if (shoot == true) {
 			attack = false;
@@ -19,86 +23,53 @@ public:
 	bool quit;
 	bool flip;
 	bool attack;
-	SDL_Keycode direction;
 	bool dying = false;
 	bool idle = false;
+	std::set<KeyMap::direction> directions;
+	//KeyMap::direction direction;
 
-	void handle (SDL_Event* e, bool& quit) {
-		if (e->type == SDL_QUIT) {
-			quit = true;
-		}
+	void processInput()
+	{
+		directions = {};
+		walk = true;
+		SDL_PumpEvents();
+		const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-		// abstract non-quit key actions to key states instead of reading PollEvent (saves needing both key_down and key_up switch)
-		else if (e->type == SDL_KEYDOWN) {
-			switch (e->key.keysym.sym) {
-			case SDLK_ESCAPE:
-				quit = true;
-				break;
-			case SDLK_RIGHT:
-				walk = true;
-				direction = e->key.keysym.sym;
-				break;
-			case SDLK_LEFT:
-				walk = true;
-				direction = e->key.keysym.sym;
-				break;
-			case SDLK_DOWN:
-				walk = true;
-				direction = e->key.keysym.sym;
-				break;
-			case SDLK_UP:
-				walk = true;
-				direction = e->key.keysym.sym;
-				break;
-			case SDLK_f:
-				if (attack == false) {
-					attack = true;
-				}
-				break;
-			case SDLK_r:
-				if (shoot == false) {
-					shoot = true;
-				}
-				break;
-			case SDLK_SPACE:
-				// Do something
-				break;
-			default:
-				walk = false;
-				shoot = false;
-				attack = false;
-				direction = NULL;
-			}
+		//continuous-response keys
+		if (keystate[SDL_SCANCODE_LEFT])
+		{
+			directions.insert(KeyMap::left);
 		}
-		/*else if (e->type == SDL_KEYUP) {
-			switch (e->key.keysym.sym) {
-			case SDLK_RIGHT:
-				walk = false;
-				direction = NULL;
-				break;
-			case SDLK_LEFT:
-				walk = false;
-				direction = NULL;
-				break;
-			case SDLK_DOWN:
-				walk = false;
-				direction = NULL;
-				break;
-			case SDLK_UP:
-				walk = false;
-				direction = NULL;
-				break;
-			case SDLK_ESCAPE:
-				quit = false;
-				break;
-			}
-		}*/
-		else {
+		if (keystate[SDL_SCANCODE_RIGHT])
+		{
+			directions.insert(KeyMap::right);
+		}
+		if (keystate[SDL_SCANCODE_UP])
+		{
+			directions.insert(KeyMap::up);
+		}
+		if (keystate[SDL_SCANCODE_DOWN])
+		{
+			directions.insert(KeyMap::down);
+		}
+		if (keystate[NULL]) {
 			walk = false;
-			shoot = false;
-			attack = false;
-			direction = NULL;
 		}
-		process();
+
+		//single-hit keys, mouse, and other general SDL events (eg. windowing)
+		while (SDL_PollEvent(&e))
+		{
+			switch (e.type)
+			{
+				/*case SDL_MOUSEMOTION:
+				break;*/
+
+			case SDL_QUIT:
+			case SDL_KEYDOWN:
+				if (e.key.keysym.sym == SDLK_ESCAPE)
+					quit = true; //quit
+				break;
+			}
+		}
 	}
 };

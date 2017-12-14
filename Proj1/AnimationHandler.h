@@ -23,7 +23,7 @@ public:
 			input->attack = playerChar->attackAnim(xPos, yPos, FPU, renderer);
 		}
 		else if (input->walk == true) {
-			playerChar->runAnim(xPos, yPos, FPU, renderer, input->direction);
+			playerChar->runAnim(xPos, yPos, FPU, renderer, input->directions);
 		}
 		else { //(jump == false && walk == false && attack == false) {
 			playerChar->setVelocity(0, 0);
