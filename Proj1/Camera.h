@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL.h>
-#include "CharacterModel.h"
 
 class Camera {
 private:

@@ -13,6 +13,7 @@
 class CharacterModel {
 public:
 	CharacterModel(std::string path, int cols, int rows, int still) : TEX_COLS(cols), TEX_ROWS(rows), STILL_FRAME(still), TEX_PATH(path) {};
+	float speed = 5;
 
 	bool loadMedia(SDL_Renderer* gRenderer) {
 		//Loading success flag
@@ -75,25 +76,29 @@ public:
 		}
 	}
 
-	// Need to process array of directions. Currently can only handle one at a time - if multiple are pressed only the last pressed is handled
 	void runAnim(int x, int y, const int& FPU, SDL_Renderer* gRenderer, std::set<KeyMap::direction> directions) {
 		velocX = 0;
 		velocY = 0;
 
 		if (directions.find(KeyMap::direction::right) != directions.end()) {
-			velocX += 5;			
+			velocX += speed;			
 		}
 
 		if (directions.find(KeyMap::direction::left) != directions.end()) {
-			velocX += -5;
+			velocX += -speed;
 		}
 
 		if (directions.find(KeyMap::direction::up) != directions.end()) {
-			velocY += -5;
+			velocY += -speed;
 		}
 
 		if (directions.find(KeyMap::direction::down) != directions.end()) {
-			velocY += 5;
+			velocY += speed;
+		}
+
+		if (velocX != 0 && velocY != 0) {
+			velocX = velocX / sqrt(2);
+			velocY = velocY / sqrt(2);
 		}
 
 		mTexture.renderAnim(x, y, processFrame(FPU), gRenderer, 0.0, NULL, flip);
@@ -167,7 +172,10 @@ public:
 		SHOOT_END = endFrame;
 	}
 
-	void move() {
+	void move(/*Map* map*/) {
+		/*if (map->CheckCollisions(bounds.x, bounds.y)) {
+			return;
+		}*/
 		//accelerate();
 		bounds.x = bounds.x + velocX;
 		bounds.y = bounds.y + velocY;
@@ -197,8 +205,8 @@ public:
 		velocY = y;
 	}
 
-	std::vector<int> getVelocVec() {
-		return std::vector<int> {velocX, velocY};
+	std::vector<float> getVelocVec() {
+		return std::vector<float> {velocX, velocY};
 	}
 
 	//void accelerate() {
@@ -277,10 +285,10 @@ private:
 	int xMax = 1280;
 	int xMin = 0;
 
-	int accelX;
-	int velocX;
-	int accelY;
-	int velocY;
+	float accelX;
+	float velocX;
+	float accelY;
+	float velocY;
 
 	SDL_Rect bounds = { 0,0 };
 

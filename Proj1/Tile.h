@@ -7,12 +7,13 @@ class Tile {
 private:
 	const int x;
 	const int y;
-	const bool hasCollision;
 	LTexture mTexture;
 	std::string imgPath;
 	SDL_Rect clip;
 
 public:
+	const bool hasCollision;
+
 	Tile(int xCoord,int yCoord, bool collision, std::string path, SDL_Renderer* gRenderer) :
 		x(xCoord), y(yCoord), hasCollision(collision), imgPath(path) {
 		if (!mTexture.loadFromFile(imgPath, gRenderer)) {

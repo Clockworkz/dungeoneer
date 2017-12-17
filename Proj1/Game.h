@@ -16,9 +16,15 @@
 
 /* TO DO 
 - Level/Map generator
+	- Add awareness of surrounding tiles, e.g if next to water use the correct edge tile.
+	- Update Tile class to read from spritesheet (not individial tile files)'
+	- Add randomisation based on defined parameters
 - EnemyCharacterModel class
+	- Create
 - NPC Model class
-- Enemy generator - tie in to map generator
+	- Create
+- Enemy generator - tie in to map generator?
+	- Randomise enemies based on some parameters
 
 */
 
@@ -74,26 +80,21 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
-		bgMap.set_tiles(renderer, &camera);
+		bgMap.SetTiles(renderer, &camera);
+		bgMap.SetDecorations(renderer, &camera);
 		// game loop
 		setFrames();
 		int frame = 0;
 		playerChar.setPosX(LEVEL_WIDTH/2);
 		playerChar.setPosY(LEVEL_HEIGHT/2);
 		while (quit == false) {
-			/*while (SDL_PollEvent(&e) != 0) {
-				if (e.type == SDL_QUIT){
-					quit = true;
-				}
-				input.handle(&e, quit);
-			}*/
 			input.processInput();
 			quit = input.quit;
 			SDL_RenderClear(renderer);
 			// Create level builder
-			bgMap.render_tiles(renderer);
+			bgMap.RenderTiles(renderer);
 			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
-			playerChar.move();
+			playerChar.move(/*&bgMap*/);
 			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
 			
 			SDL_RenderPresent(renderer);
