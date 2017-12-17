@@ -80,8 +80,8 @@ public:
 	int run() {
 		SDL_Event e;
 		playerChar.loadMedia(renderer);
-		bgMap.SetTiles(renderer, &camera);
-		bgMap.SetDecorations(renderer, &camera);
+		bgMap.SetTiles(renderer);
+		bgMap.SetDecorations(renderer);
 		// game loop
 		setFrames();
 		int frame = 0;
@@ -94,7 +94,7 @@ public:
 			// Create level builder
 			bgMap.RenderTiles(renderer);
 			animHandler.handle(&input, &playerChar, FRAMES_PER_UPDATE, renderer, &camera);
-			playerChar.move(/*&bgMap*/);
+			playerChar.move(&bgMap);
 			camera.moveCam(&playerChar, &LEVEL_WIDTH, &LEVEL_HEIGHT);
 			
 			SDL_RenderPresent(renderer);
@@ -127,7 +127,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	Camera camera = { &SCREEN_WIDTH, &SCREEN_HEIGHT };
-	CharacterModel playerChar {"Universal-LPC-spritesheet-master/body/male/orc.png", 13, 21, 27};
+	CharacterModel playerChar{ "Universal-LPC-spritesheet-master/body/male/skeleton.png", {{"red", 0x00}, {"green", 0xFF}, {"blue", 0x00 }}, 13, 21, 27 };
 	Input input{ false,false,false,false,false };
 	AnimationHandler animHandler;
 	Map bgMap = { LEVEL_WIDTH, LEVEL_HEIGHT };

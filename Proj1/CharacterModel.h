@@ -9,17 +9,18 @@
 
 #include "LTexture.h"
 #include "KeyMap.h"
+#include "Map.h"
 
 class CharacterModel {
 public:
-	CharacterModel(std::string path, int cols, int rows, int still) : TEX_COLS(cols), TEX_ROWS(rows), STILL_FRAME(still), TEX_PATH(path) {};
+	CharacterModel(std::string path, std::map<std::string, int> colourKey, int cols, int rows, int still) : TEX_PATH(path), COLOUR_KEY(colourKey), TEX_COLS(cols), TEX_ROWS(rows), STILL_FRAME(still) {};
 	float speed = 5;
 
 	bool loadMedia(SDL_Renderer* gRenderer) {
 		//Loading success flag
 		bool success = true;
 
-		if (!mTexture.loadFromFile(TEX_PATH, gRenderer)) {
+		if (!mTexture.loadFromFile(TEX_PATH, gRenderer, COLOUR_KEY)) {
 			std::cout << "Failed to load texture image!" << std::endl;
 			success = false;
 		}
@@ -33,7 +34,7 @@ public:
 
 	int processFrame(const int& FPU) {
 		if (velocX == 0 && velocY == 0) {
-			frame = STILL_FRAME;
+			frame = STILL_FRAME * FPU;
 			return frame / FPU;
 		}
 
@@ -172,10 +173,10 @@ public:
 		SHOOT_END = endFrame;
 	}
 
-	void move(/*Map* map*/) {
-		/*if (map->CheckCollisions(bounds.x, bounds.y)) {
+	void move(Map* map) {
+		if (map->CheckCollisions(bounds.x, bounds.y)) {
 			return;
-		}*/
+		}
 		//accelerate();
 		bounds.x = bounds.x + velocX;
 		bounds.y = bounds.y + velocY;
@@ -261,6 +262,7 @@ private:
 	const int TEX_COLS;
 	const int STILL_FRAME;
 	const std::string TEX_PATH;
+	const std::map<std::string, int> COLOUR_KEY;
 	int Y_BASE = 768;
 	int X_BASE = 1280;
 

@@ -26,7 +26,6 @@ public:
 	bool dying = false;
 	bool idle = false;
 	std::set<KeyMap::direction> directions;
-	//KeyMap::direction direction;
 
 	void processInput()
 	{
@@ -36,19 +35,19 @@ public:
 		const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 		//continuous-response keys
-		if (keystate[SDL_SCANCODE_LEFT])
+		if (keystate[SDL_SCANCODE_A])
 		{
 			directions.insert(KeyMap::left);
 		}
-		if (keystate[SDL_SCANCODE_RIGHT])
+		if (keystate[SDL_SCANCODE_D])
 		{
 			directions.insert(KeyMap::right);
 		}
-		if (keystate[SDL_SCANCODE_UP])
+		if (keystate[SDL_SCANCODE_W])
 		{
 			directions.insert(KeyMap::up);
 		}
-		if (keystate[SDL_SCANCODE_DOWN])
+		if (keystate[SDL_SCANCODE_S])
 		{
 			directions.insert(KeyMap::down);
 		}

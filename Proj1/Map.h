@@ -15,12 +15,11 @@ private:
 	int tileHeight = 32;
 	int mapSizeX;
 	int mapSizeY;
-	Camera* cam;
 
 public:
 	Map(int width, int height) : mapSizeX(width), mapSizeY(height) {};
 
-	void SetTiles(SDL_Renderer* renderer, Camera* camera) {
+	void SetTiles(SDL_Renderer* renderer) {
 		for (int i = 0; i < mapSizeX; i+= tileWidth) {
 			std::vector<Tile*> row;
 			for (int j = 0; j < mapSizeY; j+=tileHeight) {
@@ -40,7 +39,7 @@ public:
 		};
 	}
 
-	void SetDecorations(SDL_Renderer* renderer, Camera* camera) {
+	void SetDecorations(SDL_Renderer* renderer) {
 		for (int i = 0; i < mapSizeX; i += tileWidth) {
 			std::vector<Tile*> row;
 			for (int j = 0; j < mapSizeY; j += tileHeight) {
@@ -61,12 +60,28 @@ public:
 	}
 
 	bool CheckCollisions(int posX, int posY) {
-		bool collision = false;
-		if (tileSet[posX][posY]->hasCollision  || decorationSet[posX][posY]->hasCollision) {
-			collision = true;
-		};
+		int x = posX;
+		int y = posY;
+		//if (tileSet[x][y]->inCollision(posX, posY)) {
+		//	return true;
+		//};
 
-		return collision;
+		/*for (auto vec : tileSet) {
+			for (auto tile : vec) {
+				if (tile->inCollision(posX, posY)) {
+					return true;
+				}
+			}
+		}*/
+
+		/*for (auto vec : decorationSet) {
+			for (auto tile : vec) {
+				if (tile->inCollision(posX, posY)) {
+					return true;
+				}
+			}
+		}*/
+		return false;
 	}
 
 	void RenderTiles(SDL_Renderer* gRenderer) {

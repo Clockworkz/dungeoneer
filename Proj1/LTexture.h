@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 
 class LTexture {
 public:
@@ -19,7 +20,7 @@ public:
 		free();
 	}
 
-	bool loadFromFile(std::string path, SDL_Renderer*& gRenderer) {
+	bool loadFromFile(std::string path, SDL_Renderer*& gRenderer, std::map<std::string, int> colourKey = {}) {
 		//Get rid of preexisting texture
 		free();
 		//The final texture
@@ -39,8 +40,12 @@ public:
 		}
 		else {
 			//Color key image
-			SDL_SetColorKey(tempSurface, SDL_TRUE, SDL_MapRGB(tempSurface->format, 0xFF, 0xFF, 0xFF));
-
+			if (!colourKey.empty()) {
+				SDL_SetColorKey(tempSurface, SDL_TRUE, SDL_MapRGB(tempSurface->format, colourKey["red"], colourKey["green"], colourKey["blue"]));
+			}
+			else {
+				SDL_SetColorKey(tempSurface, SDL_TRUE, SDL_MapRGB(tempSurface->format, 0xFF, 0xFF, 0xFF));
+			}
 			//Create texture from surface pixels
 			newTexture = SDL_CreateTextureFromSurface(gRenderer, tempSurface);
 			if (newTexture == nullptr) {
